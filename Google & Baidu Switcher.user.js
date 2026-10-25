@@ -35,6 +35,9 @@
 // @match              *://so.toutiao.com/search*
 // @match              *://yandex.com/*search*
 // @match              *://yandex.ru/*search*
+// @match              *://yandex.kz/*search*
+// @match              *://yandex.by/*search*
+// @match              *://ya.ru/*search*
 // @match              *://www.ecosia.org/*
 // @match              *://*.search.yahoo.com/search*
 // @match              *://www.info.com/serp?*
@@ -491,6 +494,11 @@ void (function (ctx, uctx, sctx, searchEngineAssistant, arrayProxy, customFns) {
     function checkLocalChineseLanguage() {
       const lang = navigator.language || Intl.DateTimeFormat().resolvedOptions().locale || "en-US";
       return lang.startsWith("zh");
+    }
+
+    function checkLocalRussianLanguage() {
+      const lang = navigator.language || Intl.DateTimeFormat().resolvedOptions().locale || "en-US";
+      return lang.startsWith("ru");
     }
 
     function qS(expr, target = document) {
@@ -1312,10 +1320,10 @@ void (function (ctx, uctx, sctx, searchEngineAssistant, arrayProxy, customFns) {
             yandex: {
               siteTypeID: 7,
               siteButtonName: "𝐘𝐚𝐧𝐝𝐞𝐱",
-              siteNickName: IS_CHN ? "𝐘𝐚𝐧𝐝𝐞𝐱 搜索" : "𝐘𝐚𝐧𝐝𝐞𝐱.𝐜𝐨𝐦",
-              siteHostName: "yandex.com",
-              webURL: `https://yandex.${navigator.language === "ru" ? "ru" : "com"}/search/?text=`,
-              imageURL: `https://yandex.${navigator.language === "ru" ? "ru" : "com"}/images/search?from=tabbar&family=no&text=`,
+              siteNickName: IS_CHN ? "𝐘𝐚𝐧𝐝𝐞𝐱 搜索" : `𝐘𝐚𝐧𝐝𝐞𝐱.${checkLocalRussianLanguage() ? "ru" : "com"}`,
+              siteHostName: `yandex.${checkLocalRussianLanguage() ? "ru" : "com"}`,
+              webURL: `https://yandex.${checkLocalRussianLanguage() ? "ru" : "com"}/search/?text=`,
+              imageURL: `https://yandex.${checkLocalRussianLanguage() ? "ru" : "com"}/images/search?from=tabbar&family=no&text=`,
               imageType: ["images"],
               splitTypeName: { split: "/", index: 1 },
               mainSelector: "header form.HeaderForm",
@@ -1570,7 +1578,7 @@ void (function (ctx, uctx, sctx, searchEngineAssistant, arrayProxy, customFns) {
               "duckduckgo\\.com$": { siteType: newSiteType.DUCKDUCKGO, site: listSite.duckduckgo },
               "\\.sogou\\.com$": { siteType: newSiteType.SOGOU, site: listSite.sogou },
               "www\\.qwant\\.com$": { siteType: newSiteType.QWANT, site: listSite.qwant },
-              "yandex\\.(com|ru|eu)$": { siteType: newSiteType.YANDEX, site: listSite.yandex },
+              "(yandex\.(com|ru|kz|by|eu)|ya\.ru)$": { siteType: newSiteType.YANDEX, site: listSite.yandex },
               "\\.so\\.com$": { siteType: newSiteType.SO360, site: listSite.so360 },
               "so\\.toutiao\\.com$": { siteType: newSiteType.TOUTIAO, site: listSite.toutiao },
               "www\\.ecosia\\.org$": { siteType: newSiteType.ECOSIA, site: listSite.ecosia },
